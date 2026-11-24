@@ -1,45 +1,145 @@
+
 import streamlit as st
 import base64
 import html
-from datetime import datetime, date, time
-from zoneinfo import ZoneInfo
+from datetime import date
 from pathlib import Path
 import streamlit.components.v1 as components
-from streamlit_autorefresh import st_autorefresh
 
 # =========================================================
 # CONFIGURATION
 # =========================================================
 
-from PIL import Image
-
 BASE_DIR = Path(__file__).resolve().parent
+
 LOGO_PATH = BASE_DIR / "logo_ppgt.png"
+PDF_PATH = BASE_DIR / "dokumen" / "rancangan_keputusan.pdf"
+
+EVENT_DATE = date(2026, 11, 25)
 
 st.set_page_config(
     page_title="Rapat Anggota XX | PPGT JLB",
-    page_icon=str(LOGO_PATH),
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else "📋",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-TZ = ZoneInfo("Asia/Makassar") 
-EVENT_DATE = date(2026, 11, 25)
-PDF_PATH = Path(__file__).parent / "dokumen" / "rancangan_keputusan.pdf"
-
-# Refresh seluruh halaman setiap 30 detik.
-st_autorefresh(interval=30_000, key="rapat_anggota_refresh")
-
 # =========================================================
-# CUSTOM CSS
+# MANUAL LIVE AGENDA
+# UPDATE BAGIAN INI SAAT KEGIATAN BERUBAH
 # =========================================================
 
-st.markdown("""
+LIVE_STATUS = "BELUM DIMULAI"
+
+CURRENT_ACTIVITY = "-"
+CURRENT_TOPIC = "-"
+
+NEXT_ACTIVITY = "REGISTRASI"
+NEXT_TOPIC = "Registrasi"
+
+# Contoh update:
+#
+# LIVE_STATUS = "SEDANG BERLANGSUNG"
+# CURRENT_ACTIVITY = "SIDANG PLENO I"
+# CURRENT_TOPIC = "Pembahasan dan Pengesahan Tata Tertib"
+# NEXT_ACTIVITY = "SIDANG PLENO II"
+# NEXT_TOPIC = "Laporan Pertanggungjawaban Pengurus"
+#
+# Status yang tersedia:
+# BELUM DIMULAI
+# SEDANG BERLANGSUNG
+# SELESAI
+
+# =========================================================
+# RUNDOWN DATA
+# =========================================================
+
+schedule = [
+
+    {
+        "time": "16.00–17.00",
+        "activity": "REGISTRASI",
+        "person": "Panitia",
+        "details": []
+    },
+
+    {
+        "time": "17.00–18.30",
+        "activity": "OPENING CEREMONY",
+        "person": "",
+        "details": [
+            ("1.", "Ibadah Pembukaan", "Pdt. Paulus Palute", 0),
+            ("2.", "Acara Nasional", "-", 0),
+            ("•", "Menyanyikan Lagu Indonesia Raya", "Panitia", 1),
+            ("•", "Mengheningkan Cipta (PK)", "Panitia", 1),
+            ("3.", "Acara Organisasi", "-", 0),
+            ("•", "Menyanyikan Mars PPGT", "Panitia", 1),
+            ("•", "Pembacaan Mukadimah AD/ART PPGT", "Sekretaris PPGT", 1),
+            ("•", "Menyanyikan Hymne PPGT", "Panitia", 1),
+            ("4.", "Laporan Ketua Panitia", "Ketua Panitia", 0),
+            ("5.", "Sambutan-sambutan:", "-", 0),
+            ("•", "Pengurus PPGT Jemaat Labuang Baji", "-", 1),
+            ("•", "Pengurus PPGT Klasis Makassar", "-", 1),
+            ("•", "PMG Jemaat Labuang Baji", "-", 1),
+        ]
+    },
+
+    {
+        "time": "18.30–19.00",
+        "activity": "Istirahat",
+        "person": "-",
+        "details": []
+    },
+
+    {
+        "time": "19.00–21.00",
+        "activity": "SIDANG PLENO I",
+        "person": "PIMPINAN SIDANG SEMENTARA",
+        "details": [
+            ("1.", "Pengesahan RA", "", 0),
+            ("2.", "Pengesahan Peserta RA", "", 0),
+            ("3.", "Pembahasan dan Pengesahan Jadwal Acara", "", 0),
+            ("4.", "Pembahasan dan Pengesahan Tata Tertib", "", 0),
+            ("5.", "Pemilihan Pimpinan Sidang", "", 0),
+            ("6.", "Pengesahan Penasehat Rapat Anggota", "", 0),
+        ]
+    },
+
+    {
+        "time": "21.00–22.00",
+        "activity": "SIDANG PLENO II",
+        "person": "PIMPINAN SIDANG",
+        "details": [
+            (
+                "",
+                "Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026",
+                "",
+                0
+            ),
+            ("", "Pembacaan Laporan", "", 0),
+        ]
+    },
+
+    {
+        "time": "22.00–22.15",
+        "activity": "Doa Malam",
+        "person": "Panitia",
+        "details": []
+    }
+
+]
+
+# =========================================================
+# GLOBAL CSS
+# =========================================================
+
+st.html("""
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif !important;
 }
 
 .stApp {
@@ -52,37 +152,67 @@ html, body, [class*="css"] {
     padding-bottom: 1rem;
 }
 
-.hero {
-    background: linear-gradient(135deg, #123b2b, #236747);
-    padding: 55px 25px;
-    border-radius: 18px;
+/* HEADER */
+
+.hero-header {
+    background: linear-gradient(120deg, #1e4031, #35674d);
+    border-radius: 25px;
+    padding: 60px 45px;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+.hero-text {
     text-align: center;
-    color: white;
-    margin-bottom: 38px;
+    flex: 1;
 }
 
-.hero-label {
-    color: #b9dfc8;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    margin-bottom: 18px;
-}
-
-.hero h1 {
-    color: white;
-    font-size: clamp(28px, 5vw, 46px);
+.hero-eyebrow {
+    font-size: 13px;
     font-weight: 800;
+    letter-spacing: 5px;
+    color: #b9d8c4;
+    margin-bottom: 25px;
+}
+
+.hero-text h1 {
+    font-size: clamp(25px, 5vw, 65px);
+    font-weight: 800;
+    color: white;
     margin: 0;
     line-height: 1.2;
 }
 
-.hero p {
-    color: #d4e8dc;
-    font-size: 15px;
-    margin-top: 15px;
+.hero-text p {
+    font-size: 24px;
+    color: #d4e5da;
+    margin-top: 20px;
     margin-bottom: 0;
 }
+
+.hero-logo {
+    width: 180px;
+    min-width: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-logo img {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* SECTION */
 
 .section-title {
     font-size: 23px;
@@ -97,12 +227,16 @@ html, body, [class*="css"] {
     margin-bottom: 20px;
 }
 
+/* TABLE */
+
 .schedule-container {
     background: white;
     border: 1px solid #e3e9e4;
     border-radius: 12px;
     padding: 12px;
     overflow-x: auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .schedule-table {
@@ -163,13 +297,15 @@ html, body, [class*="css"] {
     font-weight: 700;
 }
 
+/* LIVE AGENDA */
+
 .live-wrapper {
     background: white;
     border: 1px solid #e3e9e4;
     padding: 25px;
     border-radius: 15px;
     margin-top: 35px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .live-header {
@@ -182,30 +318,38 @@ html, body, [class*="css"] {
 .live-description {
     color: #829087;
     font-size: 13px;
-    margin-bottom: 0;
+}
+
+.live-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .current-card {
     background: #e5f5e9;
     border: 1px solid #b7dfc2;
-    padding: 24px;
+    padding: 25px;
     border-radius: 12px;
-    min-height: 155px;
+    min-height: 190px;
+    box-sizing: border-box;
 }
 
 .next-card {
-    background: #f5f7f6;
+    background: #f1f3f2;
     border: 1px solid #e3e9e4;
-    padding: 24px;
+    padding: 25px;
     border-radius: 12px;
-    min-height: 155px;
+    min-height: 190px;
+    box-sizing: border-box;
 }
 
 .card-label {
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 1.3px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 .current-card .card-label {
@@ -217,15 +361,26 @@ html, body, [class*="css"] {
 }
 
 .card-title {
-    font-size: clamp(17px, 2vw, 23px);
+    font-size: clamp(18px, 2vw, 25px);
     font-weight: 800;
     color: #173d2d;
-    margin-bottom: 9px;
+    margin-bottom: 0;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
 }
 
-.card-time {
-    font-size: 13px;
+.card-topic-label {
+    font-size: 12px;
     color: #65736a;
+    margin-top: 18px;
+    margin-bottom: 5px;
+}
+
+.card-topic {
+    font-size: 15px;
+    font-weight: 600;
+    color: #344b3c;
+    line-height: 1.6;
 }
 
 .status-dot {
@@ -237,13 +392,23 @@ html, body, [class*="css"] {
     margin-right: 7px;
 }
 
-.document-wrapper {
-    background: white;
-    border: 1px solid #e3e9e4;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 35px;
+.status-dot.waiting {
+    background: #d49a32;
 }
+
+.status-dot.finished {
+    background: #829087;
+}
+
+/* DATE */
+
+.live-date {
+    color: #829087;
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+/* FOOTER */
 
 .footer {
     text-align: center;
@@ -258,9 +423,31 @@ html, body, [class*="css"] {
     color: #173d2d;
 }
 
-@media (max-width: 640px) {
-    .hero {
-        padding: 40px 15px;
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    .hero-header {
+        padding: 40px 20px;
+    }
+
+    .hero-content {
+        flex-direction: column-reverse;
+        gap: 20px;
+    }
+
+    .hero-logo {
+        width: 110px;
+        min-width: 110px;
+    }
+
+    .hero-eyebrow {
+        font-size: 10px;
+        letter-spacing: 3px;
+    }
+
+    .hero-text p {
+        font-size: 17px;
     }
 
     .schedule-container {
@@ -276,9 +463,14 @@ html, body, [class*="css"] {
         padding: 17px;
     }
 
-    .current-card, .next-card {
+    .live-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .current-card,
+    .next-card {
         padding: 18px;
-        min-height: 135px;
+        min-height: 160px;
     }
 
     .block-container {
@@ -286,96 +478,43 @@ html, body, [class*="css"] {
         padding-right: 12px;
     }
 }
+
 </style>
-""", unsafe_allow_html=True)
-
-# =========================================================
-# RUNDOWN DATA
-# =========================================================
-
-schedule = [
-    {
-        "start": "16:00", "end": "17:00",
-        "time": "16.00–17.00",
-        "activity": "REGISTRASI",
-        "person": "Panitia",
-        "details": []
-    },
-    {
-        "start": "17:00", "end": "18:30",
-        "time": "17.00–18.30",
-        "activity": "OPENING CEREMONY",
-        "person": "",
-        "details": [
-            ("1.", "Ibadah Pembukaan", "Pdt. Paulus Palute", 0),
-            ("2.", "Acara Nasional", "-", 0),
-            ("•", "Menyanyikan Lagu Indonesia Raya", "Panitia", 1),
-            ("•", "Mengheningkan Cipta (PK)", "Panitia", 1),
-            ("3.", "Acara Organisasi", "-", 0),
-            ("•", "Menyanyikan Mars PPGT", "Panitia", 1),
-            ("•", "Pembacaan Mukadimah AD/ART PPGT", "Sekretaris PPGT", 1),
-            ("•", "Menyanyikan Hymne PPGT", "Panitia", 1),
-            ("4.", "Laporan Ketua Panitia", "Ketua Panitia", 0),
-            ("5.", "Sambutan-sambutan:", "-", 0),
-            ("•", "Pengurus PPGT Jemaat Labuang Baji", "-", 1),
-            ("•", "Pengurus PPGT Klasis Makassar", "-", 1),
-            ("•", "PMG Jemaat Labuang Baji", "-", 1),
-        ]
-    },
-    {
-        "start": "18:30", "end": "19:00",
-        "time": "18.30–19.00",
-        "activity": "Istirahat",
-        "person": "-",
-        "details": []
-    },
-    {
-        "start": "19:00", "end": "21:00",
-        "time": "19.00–21.00",
-        "activity": "SIDANG PLENO I",
-        "person": "PIMPINAN SIDANG SEMENTARA",
-        "details": [
-            ("1.", "Pengesahan RA", "", 0),
-            ("2.", "Pengesahan Peserta RA", "", 0),
-            ("3.", "Pembahasan dan Pengesahan Jadwal Acara", "", 0),
-            ("4.", "Pembahasan dan Pengesahan Tata Tertib", "", 0),
-            ("5.", "Pemilihan Pimpinan Sidang", "", 0),
-            ("6.", "Pengesahan Penasehat Rapat Anggota", "", 0),
-        ]
-    },
-    {
-        "start": "21:00", "end": "22:00",
-        "time": "21.00–22.00",
-        "activity": "SIDANG PLENO II",
-        "person": "PIMPINAN SIDANG",
-        "details": [
-            ("", "Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026", "", 0),
-            ("", "Pembacaan Laporan", "", 0),
-        ]
-    },
-    {
-        "start": "22:00", "end": "22:15",
-        "time": "22.00–22.15",
-        "activity": "Doa Malam",
-        "person": "Panitia",
-        "details": []
-    }
-]
+""")
 
 # =========================================================
 # HEADER
 # =========================================================
-# Encode logo menjadi base64
-with open(LOGO_PATH, "rb") as image_file:
-    logo_base64 = base64.b64encode(image_file.read()).decode()
 
-# HEADER
+logo_html = ""
+
+if LOGO_PATH.exists():
+
+    logo_base64 = base64.b64encode(
+        LOGO_PATH.read_bytes()
+    ).decode("utf-8")
+
+    logo_html = f"""
+    <div class="hero-logo">
+        <img
+            src="data:image/png;base64,{logo_base64}"
+            alt="Logo PPGT"
+        >
+    </div>
+    """
+
+else:
+    st.warning(
+        "Logo PPGT tidak ditemukan. "
+        "Pastikan logo_ppgt.png berada di folder dashboard."
+    )
+
 st.html(f"""
 <div class="hero-header">
-
     <div class="hero-content">
 
         <div class="hero-text">
+
             <div class="hero-eyebrow">
                 PPGT JEMAAT LABUANG BAJI
             </div>
@@ -383,173 +522,141 @@ st.html(f"""
             <h1>RAPAT ANGGOTA XX</h1>
 
             <p>PPGT JEMAAT LABUANG BAJI</p>
+
         </div>
 
-        <div class="hero-logo">
-            <img src="data:image/png;base64,{logo_base64}">
-        </div>
+        {logo_html}
 
     </div>
-
 </div>
-
-<style>
-.hero-header {{
-    background: linear-gradient(120deg, #1e4031, #35674d);
-    border-radius: 30px;
-    padding: 65px 55px;
-    margin-bottom: 45px;
-    color: white;
-}}
-
-.hero-content {{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 45px;
-}}
-
-.hero-text {{
-    text-align: center;
-    flex: 1;
-}}
-
-.hero-eyebrow {{
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: 6px;
-    color: #b9d8c4;
-    margin-bottom: 25px;
-}}
-
-.hero-text h1 {{
-    font-size: clamp(20px, 5vw, 60px);
-    font-weight: 700;
-    color: white;
-    margin: 0;
-    line-height: 1.2;
-}}
-
-.hero-text p {{
-    font-size: 25px;
-    color: #d4e5da;
-    margin-top: 10px;
-}}
-
-.hero-logo {{
-    width: 190px;
-    min-width: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}}
-
-.hero-logo img {{
-    width: 100%;
-    max-width: 190px;
-    height: auto;
-    object-fit: contain;
-}}
-
-@media (max-width: 650px) {{
-    .hero-header {{
-        padding: 40px 20px;
-    }}
-
-    .hero-content {{
-        flex-direction: column-reverse;
-        gap: 20px;
-    }}
-
-    .hero-logo {{
-        width: 110px;
-        min-width: 110px;
-    }}
-
-    .hero-eyebrow {{
-        font-size: 10px;
-        letter-spacing: 3px;
-    }}
-
-    .hero-text p {{
-        font-size: 17px;
-    }}
-}}
-</style>
 """)
 
-
 # =========================================================
-# SCHEDULE TABLE
+# SCHEDULE TITLE
 # =========================================================
 
 st.html("""
-<div class="section-title">Rundown Kegiatan</div>
-<div class="section-subtitle">Rabu, 25 November 2026</div>
+<div class="section-title">
+    Rundown Kegiatan
+</div>
+
+<div class="section-subtitle">
+    Rabu, 25 November 2026
+</div>
 """)
+
+# =========================================================
+# GENERATE SCHEDULE TABLE
+# =========================================================
 
 table_html = """
 <div class="schedule-container">
+
 <table class="schedule-table">
+
 <thead>
 <tr>
-    <th>WAKTU<br>(WITA)</th>
-    <th>KEGIATAN</th>
-    <th>PELAKSANA</th>
+<th>WAKTU<br>(WITA)</th>
+<th>KEGIATAN</th>
+<th>PELAKSANA</th>
 </tr>
 </thead>
+
 <tbody>
+
 <tr>
-    <td colspan="3" class="date-row">Rabu, 25 November 2026</td>
+<td colspan="3" class="date-row">
+Rabu, 25 November 2026
+</td>
 </tr>
 """
 
 for item in schedule:
-    details = item["details"]
-    rowspan = len(details) + 1
-    break_class = "break-row" if item["activity"] == "Istirahat" else ""
 
-    # Jika rincian memiliki pelaksana masing-masing, kolom pelaksana
-    # ditampilkan per baris rincian. Jika tidak, pelaksana di- rowspan.
-    shared_person = not details or all(not d[2] for d in details)
+    details = item["details"]
+
+    rowspan = len(details) + 1
+
+    break_class = (
+        "break-row"
+        if item["activity"] == "Istirahat"
+        else ""
+    )
+
+    shared_person = (
+        not details
+        or all(not detail[2] for detail in details)
+    )
 
     table_html += f"""
-    <tr class="{break_class}">
-        <td class="time" rowspan="{rowspan}">{html.escape(item['time'])}</td>
-        <td class="activity">
-            <span class="main-activity">{html.escape(item['activity'])}</span>
-        </td>
-    """
+<tr class="{break_class}">
+
+<td class="time" rowspan="{rowspan}">
+{html.escape(item['time'])}
+</td>
+
+<td class="activity">
+<span class="main-activity">
+{html.escape(item['activity'])}
+</span>
+</td>
+"""
 
     if shared_person:
+
         table_html += f"""
-        <td class="person" rowspan="{rowspan}">
-            {html.escape(item['person'])}
-        </td>
-        """
+<td class="person" rowspan="{rowspan}">
+{html.escape(item['person'])}
+</td>
+"""
+
     else:
-        table_html += '<td class="person"></td>'
+
+        table_html += """
+<td class="person"></td>
+"""
 
     table_html += "</tr>"
 
     for number, detail, person, level in details:
+
         if number == "•":
-            content = f"•&nbsp;&nbsp;{html.escape(detail)}"
+
+            content = (
+                f"•&nbsp;&nbsp;{html.escape(detail)}"
+            )
+
             padding = "padding-left:45px;"
+
         elif number:
-            content = f"{html.escape(number)}&nbsp;&nbsp;{html.escape(detail)}"
+
+            content = (
+                f"{html.escape(number)}&nbsp;&nbsp;"
+                f"{html.escape(detail)}"
+            )
+
             padding = "padding-left:12px;"
+
         else:
+
             content = html.escape(detail)
+
             padding = "padding-left:12px;"
 
         table_html += f"""
-        <tr>
-            <td class="activity" style="{padding}">{content}</td>
-        """
+<tr>
+<td class="activity" style="{padding}">
+{content}
+</td>
+"""
 
         if not shared_person:
-            table_html += f'<td class="person">{html.escape(person)}</td>'
+
+            table_html += f"""
+<td class="person">
+{html.escape(person)}
+</td>
+"""
 
         table_html += "</tr>"
 
@@ -559,92 +666,39 @@ table_html += """
 </div>
 """
 
+# PENTING:
+# Gunakan st.html, BUKAN st.markdown.
+# Ini mencegah HTML dibaca sebagai Markdown/code block.
+
 st.html(table_html)
 
 # =========================================================
-# LIVE AGENDA LOGIC
-# =========================================================
-
-def get_live_agenda(now):
-    if now.date() < EVENT_DATE:
-        return None, schedule[0], "Belum Dimulai"
-
-    if now.date() > EVENT_DATE:
-        return None, None, "Kegiatan Selesai"
-
-    for index, item in enumerate(schedule):
-        start = time.fromisoformat(item["start"])
-        end = time.fromisoformat(item["end"])
-
-        if start <= now.time() < end:
-            next_item = schedule[index + 1] if index + 1 < len(schedule) else None
-            return item, next_item, "Sedang Berlangsung"
-
-        if now.time() < start:
-            return None, item, "Belum Dimulai"
-
-    return None, None, "Kegiatan Selesai"
-
-# =========================================================
-# LIVE AGENDA DISPLAY
+# LIVE AGENDA HEADER
 # =========================================================
 
 st.html("""
 <div class="live-wrapper">
-    <div class="live-header">Live Agenda</div>
-    <div class="live-description">
-        Pantau kegiatan Rapat Anggota XX secara langsung.
-    </div>
+
+<div class="live-header">
+Live Agenda
+</div>
+
+<div class="live-description">
+Informasi kegiatan Rapat Anggota XX secara langsung.
+</div>
+
 </div>
 """)
 
-now = datetime.now(TZ)
-current, next_activity, status = get_live_agenda(now)
+# =========================================================
+# INDONESIAN DATE
+# =========================================================
 
-if current:
-    current_title = current["activity"]
-    current_time = current["time"]
-elif status == "Belum Dimulai":
-    current_title = "Belum Dimulai"
-    current_time = "Menunggu agenda berikutnya"
-else:
-    current_title = "Kegiatan Selesai"
-    current_time = "Rapat Anggota XX telah berakhir"
-
-if next_activity:
-    next_title = next_activity["activity"]
-    next_time = next_activity["time"]
-else:
-    next_title = "Tidak Ada"
-    next_time = "Tidak ada agenda selanjutnya"
-
-col1, col2 = st.columns(2, gap="medium")
-
-with col1:
-    st.html(f"""
-    <div class="current-card">
-        <div class="card-label">
-            <span class="status-dot"></span>{html.escape(status.upper())}
-        </div>
-        <div class="card-title">{html.escape(current_title)}</div>
-        <div class="card-time">{html.escape(current_time)}</div>
-    </div>
-    """)
-
-with col2:
-    st.html(f"""
-    <div class="next-card">
-        <div class="card-label">KEGIATAN SELANJUTNYA</div>
-        <div class="card-title">{html.escape(next_title)}</div>
-        <div class="card-time">{html.escape(next_time)}</div>
-    </div>
-    """)
-
-# Nama hari dan bulan dalam Bahasa Indonesia
 hari = [
     "Senin", "Selasa", "Rabu", "Kamis",
     "Jumat", "Sabtu", "Minggu"
 ]
+
 bulan = [
     "Januari", "Februari", "Maret", "April",
     "Mei", "Juni", "Juli", "Agustus",
@@ -652,57 +706,177 @@ bulan = [
 ]
 
 tanggal_indonesia = (
-    f"{hari[now.weekday()]}, {now.day} "
-    f"{bulan[now.month - 1]} {now.year}"
+    f"{hari[EVENT_DATE.weekday()]}, "
+    f"{EVENT_DATE.day} "
+    f"{bulan[EVENT_DATE.month - 1]} "
+    f"{EVENT_DATE.year}"
 )
 
 st.html(f"""
-<div style="
-    text-align:center;
-    margin-top:15px;
-    color:#829087;
-    font-size:12px;
-">
-    {tanggal_indonesia} &nbsp; | &nbsp;
-    {now.strftime('%H:%M:%S')} WITA
+<div class="live-date">
+{tanggal_indonesia}
 </div>
 """)
 
 # =========================================================
-# PDF DOCUMENT
+# LIVE AGENDA STATUS
+# =========================================================
+
+status = LIVE_STATUS.upper().strip()
+
+if status == "BELUM DIMULAI":
+
+    status_label = "BELUM DIMULAI"
+
+    status_indicator = """
+    <span class="status-dot waiting"></span>
+    """
+
+    current_title = "Belum Dimulai"
+
+    current_topic = "Menunggu dimulainya rangkaian kegiatan."
+
+elif status == "SELESAI":
+
+    status_label = "KEGIATAN SELESAI"
+
+    status_indicator = """
+    <span class="status-dot finished"></span>
+    """
+
+    current_title = "Rapat Anggota XX Selesai"
+
+    current_topic = "Seluruh rangkaian kegiatan telah selesai dilaksanakan."
+
+else:
+
+    status_label = "SEDANG BERLANGSUNG"
+
+    status_indicator = """
+    <span class="status-dot"></span>
+    """
+
+    current_title = CURRENT_ACTIVITY
+
+    current_topic = CURRENT_TOPIC
+
+# Agenda selanjutnya
+
+if status == "SELESAI":
+
+    next_title = "Tidak Ada"
+
+    next_topic = "Seluruh rangkaian kegiatan telah selesai."
+
+else:
+
+    next_title = NEXT_ACTIVITY
+
+    next_topic = NEXT_TOPIC
+
+# =========================================================
+# LIVE AGENDA CARDS
+# =========================================================
+
+live_cards_html = f"""
+<div class="live-grid">
+
+    <div class="current-card">
+
+        <div class="card-label">
+            {status_indicator}
+            {html.escape(status_label)}
+        </div>
+
+        <div class="card-title">
+            {html.escape(current_title)}
+        </div>
+
+        <div class="card-topic-label">
+            Sedang membahas:
+        </div>
+
+        <div class="card-topic">
+            {html.escape(current_topic)}
+        </div>
+
+    </div>
+
+    <div class="next-card">
+
+        <div class="card-label">
+            KEGIATAN SELANJUTNYA
+        </div>
+
+        <div class="card-title">
+            {html.escape(next_title)}
+        </div>
+
+        <div class="card-topic-label">
+            Agenda:
+        </div>
+
+        <div class="card-topic">
+            {html.escape(next_topic)}
+        </div>
+
+    </div>
+
+</div>
+"""
+
+st.html(live_cards_html)
+
+# =========================================================
+# DOCUMENT / PDF
 # =========================================================
 
 st.html("""
 <div style="margin-top:38px;">
-    <div class="section-title">Dokumen Rapat</div>
-    <div class="section-subtitle">
-        Rancangan Keputusan Rapat Anggota XX PPGT Jemaat Labuang Baji.
-    </div>
+
+<div class="section-title">
+Dokumen Rapat
+</div>
+
+<div class="section-subtitle">
+Rancangan Keputusan Rapat Anggota XX
+PPGT Jemaat Labuang Baji.
+</div>
+
 </div>
 """)
 
 with st.container(border=True):
+
     st.html("""
-        <h3 style="
-            color: #173d2d;
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 15px;
-        ">
-            📄 Rancangan Keputusan
-        </h3>
+    <h3 style="
+        color:#173d2d;
+        font-size:20px;
+        font-weight:800;
+        margin-bottom:15px;
+    ">
+        📄 Rancangan Keputusan
+    </h3>
     """)
 
     if PDF_PATH.exists():
+
         pdf_bytes = PDF_PATH.read_bytes()
-        encoded_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
+
+        encoded_pdf = base64.b64encode(
+            pdf_bytes
+        ).decode("utf-8")
 
         pdf_html = f"""
         <iframe
             src="data:application/pdf;base64,{encoded_pdf}"
             width="100%"
-            height="750"
-            style="border:none; border-radius:8px; background:white;">
+            height="750px"
+            style="
+                border:none;
+                border-radius:8px;
+                background:white;
+            ">
         </iframe>
         """
 
@@ -719,7 +893,9 @@ with st.container(border=True):
             mime="application/pdf",
             use_container_width=True
         )
+
     else:
+
         st.info(
             "PDF belum tersedia. Masukkan file "
             "'rancangan_keputusan.pdf' ke dalam folder dokumen."
@@ -731,8 +907,12 @@ with st.container(border=True):
 
 st.html("""
 <div class="footer">
-    MADE WITH ❤️ BY <strong>PPGT JLB</strong>
-    <br><br>
-    RAPAT ANGGOTA XX · 2026
+
+MADE WITH ❤️ BY <strong>PPGT JLB</strong>
+
+<br><br>
+
+RAPAT ANGGOTA XX · 2026
+
 </div>
 """)
