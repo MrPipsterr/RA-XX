@@ -11,9 +11,14 @@ from streamlit_autorefresh import st_autorefresh
 # CONFIGURATION
 # =========================================================
 
+from PIL import Image
+
+BASE_DIR = Path(__file__).resolve().parent
+LOGO_PATH = BASE_DIR / "logo_ppgt.png"
+
 st.set_page_config(
     page_title="Rapat Anggota XX | PPGT JLB",
-    page_icon="📋",
+    page_icon=str(LOGO_PATH),
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -360,14 +365,119 @@ schedule = [
 # =========================================================
 # HEADER
 # =========================================================
+# Encode logo menjadi base64
+with open(LOGO_PATH, "rb") as image_file:
+    logo_base64 = base64.b64encode(image_file.read()).decode()
 
-st.html("""
-<div class="hero">
-    <div class="hero-label">PPGT JEMAAT LABUANG BAJI</div>
-    <h1>RAPAT ANGGOTA XX</h1>
-    <p>PPGT JEMAAT LABUANG BAJI</p>
+# HEADER
+st.html(f"""
+<div class="hero-header">
+
+    <div class="hero-content">
+
+        <div class="hero-text">
+            <div class="hero-eyebrow">
+                PPGT JEMAAT LABUANG BAJI
+            </div>
+
+            <h1>RAPAT ANGGOTA XX</h1>
+
+            <p>PPGT JEMAAT LABUANG BAJI</p>
+        </div>
+
+        <div class="hero-logo">
+            <img src="data:image/png;base64,{logo_base64}">
+        </div>
+
+    </div>
+
 </div>
+
+<style>
+.hero-header {{
+    background: linear-gradient(120deg, #1e4031, #35674d);
+    border-radius: 30px;
+    padding: 65px 55px;
+    margin-bottom: 45px;
+    color: white;
+}}
+
+.hero-content {{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 45px;
+}}
+
+.hero-text {{
+    text-align: center;
+    flex: 1;
+}}
+
+.hero-eyebrow {{
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #b9d8c4;
+    margin-bottom: 25px;
+}}
+
+.hero-text h1 {{
+    font-size: clamp(20px, 5vw, 60px);
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    line-height: 1.2;
+}}
+
+.hero-text p {{
+    font-size: 25px;
+    color: #d4e5da;
+    margin-top: 10px;
+}}
+
+.hero-logo {{
+    width: 190px;
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}}
+
+.hero-logo img {{
+    width: 100%;
+    max-width: 190px;
+    height: auto;
+    object-fit: contain;
+}}
+
+@media (max-width: 650px) {{
+    .hero-header {{
+        padding: 40px 20px;
+    }}
+
+    .hero-content {{
+        flex-direction: column-reverse;
+        gap: 20px;
+    }}
+
+    .hero-logo {{
+        width: 110px;
+        min-width: 110px;
+    }}
+
+    .hero-eyebrow {{
+        font-size: 10px;
+        letter-spacing: 3px;
+    }}
+
+    .hero-text p {{
+        font-size: 17px;
+    }}
+}}
+</style>
 """)
+
 
 # =========================================================
 # SCHEDULE TABLE
