@@ -572,7 +572,16 @@ st.html("""
 """)
 
 with st.container(border=True):
-    st.markdown("### 📄 Rancangan Keputusan")
+    st.html("""
+        <h3 style="
+            color: #173d2d;
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        ">
+            📄 Rancangan Keputusan
+        </h3>
+    """)
 
     if PDF_PATH.exists():
         pdf_bytes = PDF_PATH.read_bytes()
