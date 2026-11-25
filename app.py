@@ -29,10 +29,10 @@ st.set_page_config(
 # UPDATE BAGIAN INI SAAT KEGIATAN BERUBAH
 # =========================================================
 
-LIVE_STATUS = "SEDANG BERLANGSUNG"
+LIVE_STATUS = "SIDANG DIPENDING"
 
-CURRENT_ACTIVITY = "SIDANG PLENO I"
-CURRENT_TOPIC = "Pengesahan RA & Peserta RA, Pembahasan dan Pengesahan Jadwal Acara & Tata Tertib, Pemilihan Pimpinan Sidang, Pengesahan Penasehat Rapat Anggota"
+CURRENT_ACTIVITY = "-"
+CURRENT_TOPIC = "-"
 
 NEXT_ACTIVITY = "SIDANG PLENO II"
 NEXT_TOPIC = "Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026 Pembacaan Laporan"
