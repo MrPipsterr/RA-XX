@@ -31,14 +31,11 @@ st.set_page_config(
 
 LIVE_STATUS = "SEDANG BERLANGSUNG"
 
-CURRENT_ACTIVITY = "OPENING CEREMONY"
-CURRENT_TOPIC = "Ibadah Pembukaan & Sambutan"
+CURRENT_ACTIVITY = "ISTIRAHAT"
+CURRENT_TOPIC = "-"
 
-NEXT_ACTIVITY = "ISTIRAHAT"
-NEXT_TOPIC = "-"
-
-# NEXT_ACTIVITY = "SIDANG PLENO I"
-# NEXT_TOPIC = "Pengesahan RA & Peserta RA, Pembahasan dan Pengesahan Jadwal Acara & Tata Tertib, Pemilihan Pimpinan Sidang, Pengesahan Penasehat Rapat Anggota"
+NEXT_ACTIVITY = "SIDANG PLENO I"
+NEXT_TOPIC = "Pengesahan RA & Peserta RA, Pembahasan dan Pengesahan Jadwal Acara & Tata Tertib, Pemilihan Pimpinan Sidang, Pengesahan Penasehat Rapat Anggota"
 
 # Contoh update:
 #
