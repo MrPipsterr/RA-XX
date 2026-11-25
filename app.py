@@ -29,13 +29,13 @@ st.set_page_config(
 # UPDATE BAGIAN INI SAAT KEGIATAN BERUBAH
 # =========================================================
 
-LIVE_STATUS = "BELUM DIMULAI"
+LIVE_STATUS = "SEDANG BERLANGSUNG"
 
-CURRENT_ACTIVITY = "-"
-CURRENT_TOPIC = "-"
+CURRENT_ACTIVITY = "REGISTRASI"
+CURRENT_TOPIC = "Registrasi"
 
-NEXT_ACTIVITY = "REGISTRASI"
-NEXT_TOPIC = "Registrasi"
+NEXT_ACTIVITY = "OPENING CEREMONY"
+NEXT_TOPIC = "Ibadah Pembukaan & Sambutan"
 
 # Contoh update:
 #
