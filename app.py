@@ -31,11 +31,11 @@ st.set_page_config(
 
 LIVE_STATUS = "SEDANG BERLANGSUNG"
 
-CURRENT_ACTIVITY = "ISTIRAHAT"
-CURRENT_TOPIC = "-"
+CURRENT_ACTIVITY = "SIDANG PLENO I"
+CURRENT_TOPIC = "Pengesahan RA & Peserta RA, Pembahasan dan Pengesahan Jadwal Acara & Tata Tertib, Pemilihan Pimpinan Sidang, Pengesahan Penasehat Rapat Anggota"
 
-NEXT_ACTIVITY = "SIDANG PLENO I"
-NEXT_TOPIC = "Pengesahan RA & Peserta RA, Pembahasan dan Pengesahan Jadwal Acara & Tata Tertib, Pemilihan Pimpinan Sidang, Pengesahan Penasehat Rapat Anggota"
+NEXT_ACTIVITY = "SIDANG PLENO II"
+NEXT_TOPIC = "Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026 Pembacaan Laporan"
 
 # Contoh update:
 #
