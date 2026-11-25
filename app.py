@@ -400,6 +400,10 @@ html, body, [class*="css"] {
     background: #829087;
 }
 
+.status-dot.pending {
+    background: #FFFF00;
+}
+
 /* DATE */
 
 .live-date {
@@ -747,6 +751,18 @@ elif status == "SELESAI":
     current_title = "Rapat Anggota XX Selesai"
 
     current_topic = "Seluruh rangkaian kegiatan telah selesai dilaksanakan."
+
+elif status == "SIDANG DIPENDING":
+
+    status_label = "SIDANG DIPENDING"
+
+    status_indicator = """
+    <span class="status-dot pending"></span>
+    """
+
+    current_title = "Rapat Anggota XX Dipending"
+
+    current_topic = "Seluruh rangkaian kegiatan sedang dipending."
 
 else:
 
