@@ -1,4 +1,3 @@
-
 import streamlit as st
 import base64
 import html
@@ -15,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent
 LOGO_PATH = BASE_DIR / "logo_ppgt.png"
 PDF_PATH = BASE_DIR / "dokumen" / "rancangan_keputusan.pdf"
 
-EVENT_DATE = date(2026, 11, 26)
+EVENT_DATE = date(2026, 11, 27)
 
 st.set_page_config(
     page_title="Rapat Anggota XX | PPGT JLB",
@@ -64,13 +63,13 @@ schedule = [
     },
 
     {
-        "time": "18.15–20.00",
+        "time": "18.15–19.00",
         "activity": "SIDANG PLENO II",
         "person": "Pengurus PPGT JLB",
         "details": [
             (
                 "",
-                "Pembacaan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026",
+                "Lanjutan Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026",
                 "",
                 0
             ),
@@ -78,20 +77,13 @@ schedule = [
     },
 
     {
-        "time": "20.00–20.30",
-        "activity": "Makan Malam",
-        "person": "-",
-        "details": []
-    },
-
-    {
-        "time": "20.30–23.00",
+        "time": "19.00–19.30",
         "activity": "SIDANG PLENO II",
         "person": "Pengurus PPGT JLB",
         "details": [
             (
                 "",
-                "Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026",
+                "Pandangan Umum",
                 "",
                 0
             ),
@@ -99,9 +91,34 @@ schedule = [
     },
 
     {
-        "time": "23.00",
+        "time": "19.30–21.00",
+        "activity": "SIDANG PLENO III",
+        "person": "Pimpinan Sidang",
+        "details": [
+            (
+                "",
+                "Penetapan usul yang berkembang ",
+                "",
+                0
+            ),
+        ]
+    },
+
+    {
+        "time": "21.00-22.00",
+        "activity": "SIDANG PLENO IV",
+        "person": "Pimpinan Sidang",
+        "details": [
+            ("", "Pembahasan dan Pengesahan GBPP", "Pimpinan Sidang", 0),
+            ("", "Penetapan Komisi", "Pimpinan Sidang", 0),
+            ("", "Pemilihan Pimpinan Komisi ", "Tiap Komisi", 0),
+        ]
+    },
+
+    {
+        "time": "22.00",
         "activity": "DOA MALAM",
-        "person": "PANITIA",
+        "person": "Panitia",
         "details": []
     },
 ]
@@ -203,15 +220,16 @@ div[data-testid="stDownloadButton"] {
 /* SECTION */
 
 .section-title {
-    font-size: 23px;
+    font-size: 29px;
     font-weight: 800;
     color: #173d2d;
     margin-bottom: 5px;
 }
 
 .section-subtitle {
-    font-size: 13px;
-    color: #829087;
+    font-size: 24px;
+    # color: #829087;
+    color: #637545;
     margin-bottom: 20px;
 }
 
@@ -701,7 +719,7 @@ st.html("""
 </div>
 
 <div class="section-subtitle">
-    Kamis, 26 November 2026
+    Jumat, 27 November 2026
 </div>
 """)
 
@@ -726,7 +744,7 @@ table_html = """
 
 <tr>
 <td colspan="3" class="date-row">
-Kamis, 26 November 2026
+Jumat, 27 November 2026
 </td>
 </tr>
 """
@@ -735,13 +753,106 @@ for item in schedule:
 
     details = item["details"]
 
-    rowspan = len(details) + 1
-
     break_class = (
         "break-row"
         if item["activity"] == "Istirahat"
         else ""
     )
+
+    # KHUSUS SIDANG PLENO IV
+    if item["activity"] == "SIDANG PLENO IV":
+
+        # 1 baris judul + 3 baris kegiatan
+        table_html += f"""
+        <tr class="{break_class}">
+
+            <td class="time" rowspan="4">
+                {html.escape(item['time'])}
+            </td>
+
+            <td class="activity">
+                <span class="main-activity">
+                    {html.escape(item['activity'])}
+                </span>
+            </td>
+
+            <td class="person" rowspan="3">
+                {html.escape(item['person'])}
+            </td>
+
+        </tr>
+        """
+
+        # Dua kegiatan pertama berada dalam
+        # satu kolom Pimpinan Sidang
+        for number, detail, person, level in details[:2]:
+
+            if number == "•":
+                content = (
+                    f"•&nbsp;&nbsp;{html.escape(detail)}"
+                )
+                padding = "padding-left:45px;"
+
+            elif number:
+                content = (
+                    f"{html.escape(number)}&nbsp;&nbsp;"
+                    f"{html.escape(detail)}"
+                )
+                padding = "padding-left:12px;"
+
+            else:
+                content = html.escape(detail)
+                padding = "padding-left:12px;"
+
+            table_html += f"""
+            <tr>
+                <td class="activity" style="{padding}">
+                    {content}
+                </td>
+            </tr>
+            """
+
+        # Kegiatan ketiga memiliki pelaksana sendiri
+        if len(details) > 2:
+
+            number, detail, person, level = details[2]
+
+            if number == "•":
+                content = (
+                    f"•&nbsp;&nbsp;{html.escape(detail)}"
+                )
+                padding = "padding-left:45px;"
+
+            elif number:
+                content = (
+                    f"{html.escape(number)}&nbsp;&nbsp;"
+                    f"{html.escape(detail)}"
+                )
+                padding = "padding-left:12px;"
+
+            else:
+                content = html.escape(detail)
+                padding = "padding-left:12px;"
+
+            table_html += f"""
+            <tr>
+                <td class="activity" style="{padding}">
+                    {content}
+                </td>
+
+                <td class="person">
+                    {html.escape(person)}
+                </td>
+            </tr>
+            """
+
+        continue
+
+    # =========================================
+    # KEGIATAN LAINNYA
+    # =========================================
+
+    rowspan = len(details) + 1
 
     shared_person = (
         not details
@@ -749,32 +860,32 @@ for item in schedule:
     )
 
     table_html += f"""
-<tr class="{break_class}">
+    <tr class="{break_class}">
 
-<td class="time" rowspan="{rowspan}">
-{html.escape(item['time'])}
-</td>
+        <td class="time" rowspan="{rowspan}">
+            {html.escape(item['time'])}
+        </td>
 
-<td class="activity">
-<span class="main-activity">
-{html.escape(item['activity'])}
-</span>
-</td>
-"""
+        <td class="activity">
+            <span class="main-activity">
+                {html.escape(item['activity'])}
+            </span>
+        </td>
+    """
 
     if shared_person:
 
         table_html += f"""
-<td class="person" rowspan="{rowspan}">
-{html.escape(item['person'])}
-</td>
-"""
+        <td class="person" rowspan="{rowspan}">
+            {html.escape(item['person'])}
+        </td>
+        """
 
     else:
 
         table_html += """
-<td class="person"></td>
-"""
+        <td class="person"></td>
+        """
 
     table_html += "</tr>"
 
@@ -804,19 +915,19 @@ for item in schedule:
             padding = "padding-left:12px;"
 
         table_html += f"""
-<tr>
-<td class="activity" style="{padding}">
-{content}
-</td>
-"""
+        <tr>
+            <td class="activity" style="{padding}">
+                {content}
+            </td>
+        """
 
         if not shared_person:
 
             table_html += f"""
-<td class="person">
-{html.escape(person)}
-</td>
-"""
+            <td class="person">
+                {html.escape(person)}
+            </td>
+            """
 
         table_html += "</tr>"
 
@@ -854,29 +965,29 @@ Informasi kegiatan Rapat Anggota XX secara langsung.
 # INDONESIAN DATE
 # =========================================================
 
-hari = [
-    "Senin", "Selasa", "Rabu", "Kamis",
-    "Jumat", "Sabtu", "Minggu"
-]
+# hari = [
+#     "Senin", "Selasa", "Rabu", "Kamis",
+#     "Jumat", "Sabtu", "Minggu"
+# ]
 
-bulan = [
-    "Januari", "Februari", "Maret", "April",
-    "Mei", "Juni", "Juli", "Agustus",
-    "September", "Oktober", "November", "Desember"
-]
+# bulan = [
+#     "Januari", "Februari", "Maret", "April",
+#     "Mei", "Juni", "Juli", "Agustus",
+#     "September", "Oktober", "November", "Desember"
+# ]
 
-tanggal_indonesia = (
-    f"{hari[EVENT_DATE.weekday()]}, "
-    f"{EVENT_DATE.day} "
-    f"{bulan[EVENT_DATE.month - 1]} "
-    f"{EVENT_DATE.year}"
-)
+# tanggal_indonesia = (
+#     f"{hari[EVENT_DATE.weekday()]}, "
+#     f"{EVENT_DATE.day} "
+#     f"{bulan[EVENT_DATE.month - 1]} "
+#     f"{EVENT_DATE.year}"
+# )
 
-st.html(f"""
-<div class="live-date">
-{tanggal_indonesia}
-</div>
-""")
+# st.html(f"""
+# <div class="live-date">
+# {tanggal_indonesia}
+# </div>
+# """)
 
 # =========================================================
 # LIVE AGENDA STATUS
