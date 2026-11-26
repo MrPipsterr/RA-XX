@@ -315,11 +315,12 @@ div[data-testid="stDownloadButton"] {
     margin-bottom: 20px;
 }
 
-# HIJAU ORANGE
+/* HIJAU ORANGE */
 .current-card {
-    # background: #e5f5e9;
-    background: #F5deb3;
-    border: 1px solid #b7dfc2;
+    # background: #e5f5e9; /* kalau dimulai */
+    background: #FFEED9; /* kalau dipending */
+    # border: 1px solid #b7dfc2; /* kalau dimulai */
+    border: 1px solid #FF8C00; /* kalau dipending */
     padding: 25px;
     border-radius: 12px;
     min-height: 190px;
@@ -328,6 +329,7 @@ div[data-testid="stDownloadButton"] {
 
 .next-card {
     background: #f1f3f2;
+    # background: #F5deb3;
     border: 1px solid #e3e9e4;
     padding: 25px;
     border-radius: 12px;
@@ -342,10 +344,10 @@ div[data-testid="stDownloadButton"] {
     margin-bottom: 20px;
 }
 
-# HIJAU ORANGE
+/* HIJAU ORANGE */
 .current-card .card-label {
-    # color: #25834a;
-    color: #FFA500;
+    # color: #25834a;/* kalau dimulai */
+    color: #FF0D00; /* kalau dipending */
 }
 
 .next-card .card-label {
@@ -908,15 +910,15 @@ elif status == "SELESAI":
 
 elif status == "SIDANG DIPENDING":
 
-    status_label = "SIDANG DIPENDING"
+    status_label = "SIDANG DISKORS"
 
     status_indicator = """
     <span class="status-dot pending"></span>
     """
 
-    current_title = "Rapat Anggota XX Dipending"
+    current_title = "Rapat Anggota XX Diskors"
 
-    current_topic = "Seluruh rangkaian kegiatan sedang dipending."
+    current_topic = "Seluruh rangkaian kegiatan sedang diskors."
 
 else:
 
