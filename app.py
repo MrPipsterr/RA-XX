@@ -57,76 +57,53 @@ NEXT_TOPIC = "Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Perio
 schedule = [
 
     {
-        "time": "16.00–17.00",
-        "activity": "REGISTRASI",
+        "time": "18.00–18.15",
+        "activity": "DOA",
         "person": "Panitia",
         "details": []
     },
 
     {
-        "time": "17.00–18.30",
-        "activity": "OPENING CEREMONY",
-        "person": "",
+        "time": "18.15–20.00",
+        "activity": "SIDANG PLENO II",
+        "person": "Pengurus PPGT JLB",
         "details": [
-            ("1.", "Ibadah Pembukaan", "Pdt. Paulus Palute", 0),
-            ("2.", "Acara Nasional", "-", 0),
-            ("•", "Menyanyikan Lagu Indonesia Raya", "Panitia", 1),
-            ("•", "Mengheningkan Cipta (PK)", "Panitia", 1),
-            ("3.", "Acara Organisasi", "-", 0),
-            ("•", "Menyanyikan Mars PPGT", "Panitia", 1),
-            ("•", "Pembacaan Mukadimah AD/ART PPGT", "Sekretaris PPGT", 1),
-            ("•", "Menyanyikan Hymne PPGT", "Panitia", 1),
-            ("4.", "Laporan Ketua Panitia", "Ketua Panitia", 0),
-            ("5.", "Sambutan-sambutan:", "-", 0),
-            ("•", "Pengurus PPGT Jemaat Labuang Baji", "-", 1),
-            ("•", "Pengurus PPGT Klasis Makassar", "-", 1),
-            ("•", "PMG Jemaat Labuang Baji", "-", 1),
+            (
+                "",
+                "Pembacaan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026",
+                "",
+                0
+            ),
         ]
     },
 
     {
-        "time": "18.30–19.00",
-        "activity": "Istirahat",
+        "time": "20.00–20.30",
+        "activity": "Makan Malam",
         "person": "-",
         "details": []
     },
 
     {
-        "time": "19.00–21.00",
-        "activity": "SIDANG PLENO I",
-        "person": "PIMPINAN SIDANG SEMENTARA",
-        "details": [
-            ("1.", "Pengesahan RA", "", 0),
-            ("2.", "Pengesahan Peserta RA", "", 0),
-            ("3.", "Pembahasan dan Pengesahan Jadwal Acara", "", 0),
-            ("4.", "Pembahasan dan Pengesahan Tata Tertib", "", 0),
-            ("5.", "Pemilihan Pimpinan Sidang", "", 0),
-            ("6.", "Pengesahan Penasehat Rapat Anggota", "", 0),
-        ]
-    },
-
-    {
-        "time": "21.00–22.00",
+        "time": "20.30–23.00",
         "activity": "SIDANG PLENO II",
-        "person": "PIMPINAN SIDANG",
+        "person": "Pengurus PPGT JLB",
         "details": [
             (
                 "",
-                "Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026",
+                "Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026",
                 "",
                 0
             ),
-            ("", "Pembacaan Laporan", "", 0),
         ]
     },
 
     {
-        "time": "22.00–22.15",
-        "activity": "Doa Malam",
-        "person": "Panitia",
+        "time": "23.00",
+        "activity": "DOA MALAM",
+        "person": "PANITIA",
         "details": []
-    }
-
+    },
 ]
 
 # =========================================================
@@ -328,7 +305,8 @@ html, body, [class*="css"] {
 }
 
 .current-card {
-    background: #e5f5e9;
+    # background: #e5f5e9;
+    background: #F5deb3;
     border: 1px solid #b7dfc2;
     padding: 25px;
     border-radius: 12px;
@@ -353,7 +331,8 @@ html, body, [class*="css"] {
 }
 
 .current-card .card-label {
-    color: #25834a;
+    # color: #25834a;
+    color: #FFA500;
 }
 
 .next-card .card-label {
@@ -401,7 +380,7 @@ html, body, [class*="css"] {
 }
 
 .status-dot.pending {
-    background: #FFFF00;
+    background: #FFA500;
 }
 
 /* DATE */
@@ -545,7 +524,7 @@ st.html("""
 </div>
 
 <div class="section-subtitle">
-    Rabu, 25 November 2026
+    Kamis, 26 November 2026
 </div>
 """)
 
