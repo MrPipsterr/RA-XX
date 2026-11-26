@@ -32,7 +32,7 @@ st.set_page_config(
 LIVE_STATUS = "SEDANG BELANGSUNG"
 
 CURRENT_ACTIVITY = "SIDANG PLENO II"
-CURRENT_TOPIC = "Pembacaan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026"
+CURRENT_TOPIC = "Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026"
 
 NEXT_ACTIVITY = "Istirahat"
 NEXT_TOPIC = "-"
