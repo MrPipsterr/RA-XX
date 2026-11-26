@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent
 LOGO_PATH = BASE_DIR / "logo_ppgt.png"
 PDF_PATH = BASE_DIR / "dokumen" / "rancangan_keputusan.pdf"
 
-EVENT_DATE = date(2026, 11, 25)
+EVENT_DATE = date(2026, 11, 26)
 
 st.set_page_config(
     page_title="Rapat Anggota XX | PPGT JLB",
@@ -549,7 +549,7 @@ table_html = """
 
 <tr>
 <td colspan="3" class="date-row">
-Kamis, 25 November 2026
+Kamis, 26 November 2026
 </td>
 </tr>
 """
