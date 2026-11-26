@@ -29,13 +29,13 @@ st.set_page_config(
 # UPDATE BAGIAN INI SAAT KEGIATAN BERUBAH
 # =========================================================
 
-LIVE_STATUS = "SEDANG BERLANGSUNG"
+LIVE_STATUS = "SIDANG DIPENDING"
 
-CURRENT_ACTIVITY = "SIDANG PLENO II"
-CURRENT_TOPIC = "Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026"
+CURRENT_ACTIVITY = "-"
+CURRENT_TOPIC = "Sidang sedang Dipending"
 
-NEXT_ACTIVITY = "DOA MALAM"
-NEXT_TOPIC = "-"
+NEXT_ACTIVITY = "SIDANG PLENO II"
+NEXT_TOPIC = "Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026"
 
 # Contoh update:
 #
@@ -317,8 +317,8 @@ div[data-testid="stDownloadButton"] {
 
 # HIJAU ORANGE
 .current-card {
-    background: #e5f5e9;
-    # background: #F5deb3;
+    # background: #e5f5e9;
+    background: #F5deb3;
     border: 1px solid #b7dfc2;
     padding: 25px;
     border-radius: 12px;
@@ -344,8 +344,8 @@ div[data-testid="stDownloadButton"] {
 
 # HIJAU ORANGE
 .current-card .card-label {
-    color: #25834a;
-    # color: #FFA500;
+    # color: #25834a;
+    color: #FFA500;
 }
 
 .next-card .card-label {
