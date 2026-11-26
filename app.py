@@ -386,7 +386,7 @@ div[data-testid="stDownloadButton"] {
 
 .card-topic-label {
     font-size: 12px;
-    color: #65736a;
+    color: white;
     margin-top: 18px;
     margin-bottom: 5px;
 }
