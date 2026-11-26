@@ -129,6 +129,17 @@ html, body, [class*="css"] {
     padding-bottom: 1rem;
 }
 
+/* JARAK COVER DAN TOMBOL DOWNLOAD */
+
+.document-cover {
+    margin-bottom: 0 !important;
+}
+
+/* Mengurangi jarak container tombol */
+div[data-testid="stDownloadButton"] {
+    margin-top: -12px !important;
+}
+
 /* HEADER */
 
 .hero-header {
@@ -406,7 +417,93 @@ html, body, [class*="css"] {
     color: #173d2d;
 }
 
+/* DOKUMEN RAPAT */
+
+.document-card {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto 25px;
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: white;
+    border: 1px solid #e3e9e4;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.document-header {
+    font-size: 23px;
+    font-weight: 800;
+    color: #173d2d;
+    margin-bottom: 5px;
+}
+
+.document-description {
+    color: #829087;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.document-cover {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    max-height: 700px;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
 /* MOBILE */
+
+@media (max-width: 650px) {
+
+    .document-card {
+        max-width: 420px;
+        padding: 12px;
+        margin: 15px auto 20px;
+        border-radius: 12px;
+    }
+
+    .document-header {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .document-description {
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+    .document-cover {
+        max-width: 360px;
+        max-height: 550px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    .document-card {
+        padding: 12px;
+        border-radius: 12px;
+        margin-top: 15px;
+    }
+
+    .document-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .document-description {
+        font-size: 13px;
+        margin-top: 15px;
+    }
+}
 
 @media (max-width: 650px) {
 
@@ -433,14 +530,69 @@ html, body, [class*="css"] {
         font-size: 17px;
     }
 
+    /* RUNDOWN RESPONSIVE */
+
     .schedule-container {
-        padding: 5px;
+        width: 100%;
+        max-width: 100%;
+        padding: 4px;
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
 
     .schedule-table {
-        min-width: 680px;
-        font-size: 12px;
+        width: 100%;
+        min-width: 0;
+        table-layout: fixed;
+        font-size: 10px;
+        border-collapse: collapse;
     }
+
+    .schedule-table th {
+        padding: 8px 4px;
+        font-size: 10px;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .schedule-table td {
+        padding: 8px 4px;
+        vertical-align: middle;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    /* Pembagian lebar kolom */
+
+    .schedule-table .time {
+        width: 22%;
+        white-space: normal;
+        text-align: center;
+    }
+
+    .schedule-table .activity {
+        width: 53%;
+    }
+
+    .schedule-table .person {
+        width: 25%;
+        text-align: center;
+    }
+
+    /* Judul kegiatan */
+
+    .schedule-table .main-activity {
+        overflow-wrap: anywhere;
+    }
+
+    /* Baris tanggal */
+
+    .schedule-table .date-row {
+        padding: 8px 4px;
+        font-size: 11px;
+    }
+
+    /* LIVE AGENDA */
 
     .live-wrapper {
         padding: 17px;
@@ -448,17 +600,38 @@ html, body, [class*="css"] {
 
     .live-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .current-card,
     .next-card {
-        padding: 18px;
-        min-height: 160px;
+        padding: 16px;
+        min-height: auto;
     }
 
+/* RESPONSIVE HP */
+
+@media (max-width: 650px) {
+
+    .document-wrapper {
+        padding: 17px;
+        margin-top: 25px;
+    }
+
+    .document-header {
+        font-size: 23px;
+    }
+
+    .document-description {
+        font-size: 13px;
+    }
+}
+
+    /* HALAMAN */
+
     .block-container {
-        padding-left: 12px;
-        padding-right: 12px;
+        padding-left: 8px;
+        padding-right: 8px;
     }
 }
 
@@ -826,60 +999,46 @@ st.html(live_cards_html)
 # DOCUMENT / PDF
 # =========================================================
 
-st.html("""
-<div style="margin-top:38px;">
+COVER_PATH = BASE_DIR / "dokumen" / "cover_rancangan.jpg"
 
-<div class="section-title">
-Dokumen Rapat
-</div>
+if PDF_PATH.exists() and COVER_PATH.exists():
 
-<div class="section-subtitle">
-Rancangan Keputusan Rapat Anggota XX
-PPGT Jemaat Labuang Baji.
-</div>
+    pdf_bytes = PDF_PATH.read_bytes()
 
-</div>
-""")
+    cover_bytes = COVER_PATH.read_bytes()
 
-with st.container(border=True):
+    encoded_cover = base64.b64encode(
+        cover_bytes
+    ).decode("utf-8")
 
-    st.html("""
-    <h3 style="
-        color:#173d2d;
-        font-size:20px;
-        font-weight:800;
-        margin-bottom:15px;
-    ">
-        📄 Rancangan Keputusan
-    </h3>
+    # CARD DOKUMEN + COVER
+
+    st.html(f"""
+    <div class="document-card">
+
+        <div class="document-header">
+            📄 Dokumen Rapat
+        </div>
+
+        <div class="document-description">
+            Rancangan Keputusan Rapat Anggota XX
+            PPGT Jemaat Labuang Baji.
+        </div>
+
+        <img
+            src="data:image/jpeg;base64,{encoded_cover}"
+            class="document-cover"
+            alt="Cover Rancangan Keputusan"
+        >
+
+    </div>
     """)
 
-    if PDF_PATH.exists():
+    # TOMBOL DOWNLOAD
 
-        pdf_bytes = PDF_PATH.read_bytes()
+    col1, col2, col3 = st.columns([1, 2, 1])
 
-        encoded_pdf = base64.b64encode(
-            pdf_bytes
-        ).decode("utf-8")
-
-        pdf_html = f"""
-        <iframe
-            src="data:application/pdf;base64,{encoded_pdf}"
-            width="100%"
-            height="750px"
-            style="
-                border:none;
-                border-radius:8px;
-                background:white;
-            ">
-        </iframe>
-        """
-
-        components.html(
-            pdf_html,
-            height=770,
-            scrolling=True
-        )
+    with col2:
 
         st.download_button(
             label="⬇ Download Rancangan Keputusan",
@@ -889,12 +1048,35 @@ with st.container(border=True):
             use_container_width=True
         )
 
-    else:
+    # KETERANGAN DOWNLOAD
 
-        st.info(
-            "PDF belum tersedia. Masukkan file "
-            "'rancangan_keputusan.pdf' ke dalam folder dokumen."
-        )
+    st.html("""
+        <div style="
+            text-align:center;
+            margin-top:5px;
+            margin-bottom:15px;
+            color:#829087;
+            font-size:13px;
+            line-height:1.6;
+        ">
+            Untuk melihat dokumen lengkap, silakan
+            download rancangan keputusan di atas.
+        </div>
+    """)
+
+elif not PDF_PATH.exists():
+
+    st.info(
+        "PDF belum tersedia. Masukkan file "
+        "'rancangan_keputusan.pdf' ke dalam folder dokumen."
+    )
+
+else:
+
+    st.info(
+        "Cover dokumen belum tersedia. Masukkan file "
+        "'cover_rancangan.jpg' ke dalam folder dokumen."
+    )
 
 # =========================================================
 # FOOTER
