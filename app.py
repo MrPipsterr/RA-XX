@@ -1,3 +1,4 @@
+import database as db
 import streamlit as st
 import base64
 import html
@@ -10,6 +11,8 @@ import streamlit.components.v1 as components
 # =========================================================
 
 BASE_DIR = Path(__file__).resolve().parent
+
+db.init_db()
 
 LOGO_PATH = BASE_DIR / "logo_ppgt.png"
 PDF_PATH = BASE_DIR / "dokumen" / "rancangan_keputusan.pdf"
@@ -1109,6 +1112,201 @@ live_cards_html = f"""
 """
 
 st.html(live_cards_html)
+
+# =========================================================
+# LIVE COUNT PUBLIC
+# =========================================================
+
+st.html("""
+<div style="
+    background: white;
+    border:1px solid #e3e9e4;
+    padding:25px;
+    border-radius:15px;
+    margin-top:35px;
+    margin-bottom:18px;
+">
+    <div style="
+        font-size:23px;
+        font-weight:800;
+        color:#173d2d;
+    ">
+        Live Count Pemilihan
+    </div>
+
+    <div style="
+        color:#829087;
+        font-size:13px;
+        margin-top:5px;
+    ">
+        Pantau perkembangan hasil penghitungan
+        suara Rapat Anggota XX secara langsung.
+    </div>
+</div>
+""")
+
+st.html("""
+<style>
+
+/* LIVE COUNT */
+[data-testid="stVerticalBlock"] h3 {
+    color: #173d2d !important;
+}
+
+[data-testid="stMetricLabel"] {
+    color: #64748b !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: #173d2d !important;
+}
+
+[data-testid="stMarkdownContainer"] p {
+    color: #334155;
+}
+
+[data-testid="stAlert"] {
+    color: #173d2d !important;
+}
+
+[data-testid="stProgressBar"] {
+    background-color: #e5e7eb;
+}
+
+</style>
+""")
+
+# =========================================================
+# LIVE COUNT PUBLICATION
+# =========================================================
+
+LIVE_COUNT_PUBLISHED = True # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
+
+@st.fragment(run_every="3s")
+def show_live_count():
+
+    positions = db.get_elections()
+
+    for election in positions:
+
+        position = election["position"]
+        title = db.POSITIONS[position]
+        status = election["status"]
+
+        candidates = db.get_candidates(position)
+        valid, invalid = db.get_totals(position)
+        total = valid + invalid
+
+        st.markdown(f"### Pemilihan {title}")
+
+        if status == "Persiapan":
+
+            st.info(
+                "Menunggu dimulainya penghitungan suara."
+            )
+
+        elif status == "Berlangsung":
+
+            st.success("Penghitungan sedang berlangsung.")
+
+        else:
+
+            st.success("Penghitungan selesai.")
+
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric("Total Suara", total)
+        col2.metric("Suara Sah", valid)
+        col3.metric("Tidak Sah", invalid)
+
+        if candidates and valid > 0:
+
+            ranked = sorted(
+                candidates,
+                key=lambda x: x["votes"],
+                reverse=True
+            )
+
+            for candidate in ranked:
+
+                votes = candidate["votes"]
+
+                percentage = (
+                    votes / valid * 100
+                    if valid else 0
+                )
+
+                st.markdown(
+                    f"**{candidate['name']}**"
+                    f" — {votes} suara "
+                    f"({percentage:.1f}%)"
+                )
+
+                st.progress(
+                    min(percentage / 100, 1.0)
+                )
+
+        elif candidates:
+
+            st.caption(
+                "Belum ada suara yang masuk."
+            )
+
+        if status == "Selesai" and candidates:
+
+            if valid > 0:
+
+                highest = max(
+                    candidate["votes"]
+                    for candidate in candidates
+                )
+
+                winners = [
+                    candidate["name"]
+                    for candidate in candidates
+                    if candidate["votes"] == highest
+                ]
+
+                if len(winners) == 1:
+
+                    st.success(
+                        f"Pemenang: {winners[0]}"
+                    )
+
+                else:
+
+                    st.warning(
+                        "Hasil seri: " + ", ".join(winners)
+                    )
+
+        st.divider()
+
+
+if LIVE_COUNT_PUBLISHED:
+    show_live_count()
+else:
+    st.markdown(
+        """
+        <div style="
+            background: #f8faf9;
+            border: 1px solid #e3e9e4;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+        ">
+            <div style="
+                color: #64746b;
+                font-size: 16px;
+                font-weight: 600;
+            ">
+                Belum memasuki agenda pemilihan
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 
 # =========================================================
 # DOCUMENT / PDF
