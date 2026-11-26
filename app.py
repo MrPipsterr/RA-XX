@@ -549,7 +549,7 @@ table_html = """
 
 <tr>
 <td colspan="3" class="date-row">
-Rabu, 25 November 2026
+Kamis, 25 November 2026
 </td>
 </tr>
 """
@@ -907,7 +907,7 @@ MADE WITH ❤️ BY <strong>PPGT JLB</strong>
 
 <br><br>
 
-RAPAT ANGGOTA XX · 2026
+RAPAT ANGGOTA XX PPGT JLB · 2026
 
 </div>
 """)
