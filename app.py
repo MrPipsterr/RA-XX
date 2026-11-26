@@ -386,7 +386,7 @@ div[data-testid="stDownloadButton"] {
 
 .card-topic-label {
     font-size: 12px;
-    color: white;
+    color: #65736a;
     margin-top: 18px;
     margin-bottom: 5px;
 }
@@ -1180,7 +1180,7 @@ st.html("""
 # LIVE COUNT PUBLICATION
 # =========================================================
 
-LIVE_COUNT_PUBLISHED = True # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
+LIVE_COUNT_PUBLISHED = False # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
 
 @st.fragment(run_every="3s")
 def show_live_count():
