@@ -1204,7 +1204,7 @@ div[data-testid="stAlert"] div {
 
 LIVE_COUNT_PUBLISHED = True # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
 
-@st.fragment(run_every="1s")
+@st.fragment(run_every="4s")
 def show_live_count():
 
     positions = db.get_elections()
