@@ -1175,23 +1175,33 @@ st.html("""
     color: #173d2d !important;
 }
 
-/* Alert: info, success, warning */
-div[data-testid="stAlert"] {
-    background-color: #d8e8f7 !important;
-    border: 1px solid #c5d9ed !important;
-    color: white !important;
-}
+# /* Alert: info, success, warning */
+# div[data-testid="stAlert"] {
+#     background-color: #d8e8f7 !important;
+#     border: 1px solid #c5d9ed !important;
+#     color: white !important;
+# }
 
-/* Paksa seluruh teks di dalam alert */
-div[data-testid="stAlert"] p,
-div[data-testid="stAlert"] span,
-div[data-testid="stAlert"] div {
-    color: white !important;
-}
+# /* Paksa seluruh teks di dalam alert */
+# div[data-testid="stAlert"] p,
+# div[data-testid="stAlert"] span,
+# div[data-testid="stAlert"] div {
+#     color: white !important;
+# }
 
 /* Progress bar */
 [data-testid="stProgressBar"] {
     background-color: #e5e7eb !important;
+}
+
+/* KHUSUS TEKS STATUS PENGHITUNGAN */
+div[data-testid="stAlert"] p {
+    color: #F1F5F9 !important;
+    opacity: 1 !important;
+}
+
+div[data-testid="stAlert"] {
+    color: #F1F5F9 !important;
 }
 
 </style>
@@ -1258,11 +1268,25 @@ def show_live_count():
                     if valid else 0
                 )
 
-                st.markdown(
-                    f"**{candidate['name']}**"
-                    f" — {votes} suara "
-                    f"({percentage:.1f}%)"
-                )
+                # st.markdown(
+                #     f"**{candidate['name']}**"
+                #     f" — {votes} suara "
+                #     f"({percentage:.1f}%)"
+                # )
+                st.html(f"""
+                    <div style="
+                        color: #173d2d !important;
+                        font-size: 16px;
+                        line-height: 1.6;
+                    ">
+                        <strong style="color: #173d2d !important;">
+                            {html.escape(str(candidate['name']))}
+                        </strong>
+                        <span style="color: #475569 !important;">
+                            — {votes} suara ({percentage:.1f}%)
+                        </span>
+                    </div>
+                    """)
 
                 st.progress(
                     min(percentage / 100, 1.0)
