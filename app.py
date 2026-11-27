@@ -31,13 +31,13 @@ st.set_page_config(
 # UPDATE BAGIAN INI SAAT KEGIATAN BERUBAH
 # =========================================================
 
-LIVE_STATUS = "SIDANG DIPENDING"
+LIVE_STATUS = "SEDANG BERLANGSUNG"
 
-CURRENT_ACTIVITY = "-"
-CURRENT_TOPIC = "Sidang sedang Dipending"
+CURRENT_ACTIVITY = "SIDANG PLENO II"
+CURRENT_TOPIC = "Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026"
 
 NEXT_ACTIVITY = "SIDANG PLENO II"
-NEXT_TOPIC = "Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026"
+NEXT_TOPIC = "Pandangan Umum"
 
 # Contoh update:
 #
@@ -338,10 +338,10 @@ div[data-testid="stDownloadButton"] {
 
 /* HIJAU ORANGE */
 .current-card {
-    # background: #e5f5e9; /* kalau dimulai */
-    background: #FFEED9; /* kalau dipending */
-    # border: 1px solid #b7dfc2; /* kalau dimulai */
-    border: 1px solid #FF8C00; /* kalau dipending */
+    background: #e5f5e9; /* kalau dimulai */
+    # background: #FFEED9; /* kalau dipending */
+    border: 1px solid #b7dfc2; /* kalau dimulai */
+    # border: 1px solid #FF8C00; /* kalau dipending */
     padding: 25px;
     border-radius: 12px;
     min-height: 190px;
@@ -367,8 +367,8 @@ div[data-testid="stDownloadButton"] {
 
 /* HIJAU ORANGE */
 .current-card .card-label {
-    # color: #25834a;/* kalau dimulai */
-    color: #FF0D00; /* kalau dipending */
+    color: #25834a;/* kalau dimulai */
+    # color: #FF0D00; /* kalau dipending */
 }
 
 .next-card .card-label {
@@ -1270,7 +1270,7 @@ def show_live_count():
                 if len(winners) == 1:
 
                     st.success(
-                        f"Pemenang: {winners[0]}"
+                        f"Pemenang Terpilih: {winners[0]}"
                     )
 
                 else:
