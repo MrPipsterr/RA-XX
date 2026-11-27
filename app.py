@@ -17,7 +17,7 @@ db.init_db()
 LOGO_PATH = BASE_DIR / "logo_ppgt.png"
 PDF_PATH = BASE_DIR / "dokumen" / "rancangan_keputusan.pdf"
 
-EVENT_DATE = date(2026, 11, 27)
+EVENT_DATE = date(2026, 11, 28)
 
 st.set_page_config(
     page_title="Rapat Anggota XX | PPGT JLB",
@@ -59,71 +59,90 @@ NEXT_TOPIC = "Pembahasan dan Pengesahan GBPP"
 schedule = [
 
     {
-        "time": "18.00–18.15",
-        "activity": "DOA",
+        "time": "10.00-10.15",
+        "activity": "DOA PAGI",
         "person": "Panitia",
         "details": []
     },
 
     {
-        "time": "18.15–19.00",
-        "activity": "SIDANG PLENO II",
-        "person": "Pengurus PPGT JLB",
-        "details": [
-            (
-                "",
-                "Lanjutan Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024–2026",
-                "",
-                0
-            ),
-        ]
-    },
-
-    {
-        "time": "19.00–19.30",
-        "activity": "SIDANG PLENO II",
-        "person": "Pengurus PPGT JLB",
-        "details": [
-            (
-                "",
-                "Pandangan Umum",
-                "",
-                0
-            ),
-        ]
-    },
-
-    {
-        "time": "19.30–21.00",
-        "activity": "SIDANG PLENO III",
-        "person": "Pimpinan Sidang",
-        "details": [
-            (
-                "",
-                "Penetapan usul yang berkembang ",
-                "",
-                0
-            ),
-        ]
-    },
-
-    {
-        "time": "21.00-22.00",
+        "time": "10.15-12.30",
         "activity": "SIDANG PLENO IV",
         "person": "Pimpinan Sidang",
         "details": [
-            ("", "Pembahasan dan Pengesahan GBPP", "Pimpinan Sidang", 0),
-            ("", "Penetapan Komisi", "Pimpinan Sidang", 0),
-            ("", "Pemilihan Pimpinan Komisi ", "Tiap Komisi", 0),
+            ("", "Sidang Komisi", "", 0),
         ]
     },
 
     {
-        "time": "22.00",
-        "activity": "DOA MALAM",
+        "time": "12.30-13.00",
+        "activity": "MAKAN SIANG",
         "person": "Panitia",
         "details": []
     },
+
+    {
+        "time": "13.00-16.00",
+        "activity": "SIDANG PLENO V",
+        "person": "Pimpinan Sidang",
+        "details": [
+            ("", "Pembahasan Hasil Sidang Komisi", "", 0),
+        ]
+    },
+
+    {
+        "time": "16.00-19.00",
+        "activity": "",
+        "person": "Pimpinan Sidang",
+        "details": [
+            ("", "Lanjutan Pembahasan Komisi", "", 0),
+        ]
+    },
+
+    {
+        "time": "19.00-19.30",
+        "activity": "MAKAN MALAM",
+        "person": "Panitia",
+        "details": []
+    },
+
+    {
+        "time": "19.30-20.30",
+        "activity": "LANJUTAN SIDANG PLENO V",
+        "person": "Pimpinan Sidang",
+        "details": [
+            ("", "Pembahasan Hasil Sidang Komisi", "", 0),
+            ("", "Lanjutan Pembahasan Komisi", "", 0),
+            ("", "Pengesahan Hasil Sidang Komisi", "", 0),
+        ]
+    },
+
+    {
+        "time": "20.30-22.30",
+        "activity": "SIDANG PLENO VI",
+        "person": "Pimpinan Sidang",
+        "details": [
+            ("", "Pemilihan KSB PPGT Jemaat Labuang Baji Periode 2026-2028", "", 0),
+            ("", "Pembentukan Tim Formatur", "", 0),
+        ]
+    },
+
+    {
+        "time": "22.30-23.00",
+        "activity": "Closing Ceremony",
+        "person": "Pimpinan Sidang",
+        "details": [
+            ("", "Penutupan Rapat Anggota XX PPGT JLB", "", 0),
+        ]
+    },
+
+    {
+        "time": "",
+        "activity": "DOA PENUTUP",
+        "person": "Panitia",
+        "details": []
+    },
+
 ]
 
 # =========================================================
@@ -722,7 +741,7 @@ st.html("""
 </div>
 
 <div class="section-subtitle">
-    Jumat, 27 November 2026
+    Sabtu, 28 November 2026
 </div>
 """)
 
@@ -747,7 +766,7 @@ table_html = """
 
 <tr>
 <td colspan="3" class="date-row">
-Jumat, 27 November 2026
+Sabtu, 28 November 2026
 </td>
 </tr>
 """
@@ -763,13 +782,25 @@ for item in schedule:
     )
 
     # KHUSUS SIDANG PLENO IV
-    if item["activity"] == "SIDANG PLENO IV":
 
-        # 1 baris judul + 3 baris kegiatan
+# =========================================
+# KHUSUS SIDANG PLENO IV, V, DAN VI
+# =========================================
+
+    if item["activity"] in [
+        "SIDANG PLENO IV",
+        "SIDANG PLENO V",
+        "LANJUTAN SIDANG PLENO V",
+        "SIDANG PLENO VI"
+    ]:
+
+        # Jumlah baris menyesuaikan jumlah detail
+        rowspan = len(details) + 1
+
         table_html += f"""
         <tr class="{break_class}">
 
-            <td class="time" rowspan="4">
+            <td class="time" rowspan="{rowspan}">
                 {html.escape(item['time'])}
             </td>
 
@@ -779,16 +810,15 @@ for item in schedule:
                 </span>
             </td>
 
-            <td class="person" rowspan="3">
+            <td class="person" rowspan="{rowspan}">
                 {html.escape(item['person'])}
             </td>
 
         </tr>
         """
 
-        # Dua kegiatan pertama berada dalam
-        # satu kolom Pimpinan Sidang
-        for number, detail, person, level in details[:2]:
+        # Tampilkan seluruh detail kegiatan
+        for number, detail, person, level in details:
 
             if number == "•":
                 content = (
@@ -811,45 +841,12 @@ for item in schedule:
             <tr>
                 <td class="activity" style="{padding}">
                     {content}
-                </td>
-            </tr>
-            """
-
-        # Kegiatan ketiga memiliki pelaksana sendiri
-        if len(details) > 2:
-
-            number, detail, person, level = details[2]
-
-            if number == "•":
-                content = (
-                    f"•&nbsp;&nbsp;{html.escape(detail)}"
-                )
-                padding = "padding-left:45px;"
-
-            elif number:
-                content = (
-                    f"{html.escape(number)}&nbsp;&nbsp;"
-                    f"{html.escape(detail)}"
-                )
-                padding = "padding-left:12px;"
-
-            else:
-                content = html.escape(detail)
-                padding = "padding-left:12px;"
-
-            table_html += f"""
-            <tr>
-                <td class="activity" style="{padding}">
-                    {content}
-                </td>
-
-                <td class="person">
-                    {html.escape(person)}
                 </td>
             </tr>
             """
 
         continue
+
 
     # =========================================
     # KEGIATAN LAINNYA
