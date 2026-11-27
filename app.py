@@ -1212,7 +1212,7 @@ div[data-testid="stAlert"] {
 # LIVE COUNT PUBLICATION
 # =========================================================
 
-LIVE_COUNT_PUBLISHED = True # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
+LIVE_COUNT_PUBLISHED = False # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
 
 @st.fragment(run_every="4s")
 def show_live_count():
