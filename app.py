@@ -31,13 +31,13 @@ st.set_page_config(
 # UPDATE BAGIAN INI SAAT KEGIATAN BERUBAH
 # =========================================================
 
-LIVE_STATUS = "SEDANG BERLANGSUNG"
+LIVE_STATUS = "SIDANG DIPENDING"
 
-CURRENT_ACTIVITY = "SIDANG PLENO II"
-CURRENT_TOPIC = "Tanggapan Laporan Pertanggungjawaban Pengurus PPGT Jemaat Labuang Baji Periode 2024-2026"
+CURRENT_ACTIVITY = "SIDANG DISKORS"
+CURRENT_TOPIC = "Seluruh Kegiatan sedang Diskors"
 
-NEXT_ACTIVITY = "SIDANG PLENO II"
-NEXT_TOPIC = "Pandangan Umum"
+NEXT_ACTIVITY = "SIDANG PLENO IV"
+NEXT_TOPIC = "Pembahasan dan Pengesahan GBPP"
 
 # Contoh update:
 #
@@ -338,10 +338,10 @@ div[data-testid="stDownloadButton"] {
 
 /* HIJAU ORANGE */
 .current-card {
-    background: #e5f5e9; /* kalau dimulai */
-    # background: #FFEED9; /* kalau dipending */
-    border: 1px solid #b7dfc2; /* kalau dimulai */
-    # border: 1px solid #FF8C00; /* kalau dipending */
+    # background: #e5f5e9; /* kalau dimulai */
+    background: #FFEED9; /* kalau dipending */
+    # border: 1px solid #b7dfc2; /* kalau dimulai */
+    border: 1px solid #FF8C00; /* kalau dipending */
     padding: 25px;
     border-radius: 12px;
     min-height: 190px;
@@ -367,8 +367,8 @@ div[data-testid="stDownloadButton"] {
 
 /* HIJAU ORANGE */
 .current-card .card-label {
-    color: #25834a;/* kalau dimulai */
-    # color: #FF0D00; /* kalau dipending */
+    # color: #25834a;/* kalau dimulai */
+    color: #FF0D00; /* kalau dipending */
 }
 
 .next-card .card-label {
