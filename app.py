@@ -1179,14 +1179,14 @@ st.html("""
 div[data-testid="stAlert"] {
     background-color: #d8e8f7 !important;
     border: 1px solid #c5d9ed !important;
-    color: #334155 !important;
+    color: white !important;
 }
 
 /* Paksa seluruh teks di dalam alert */
 div[data-testid="stAlert"] p,
 div[data-testid="stAlert"] span,
 div[data-testid="stAlert"] div {
-    color: #334155 !important;
+    color: white !important;
 }
 
 /* Progress bar */
