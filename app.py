@@ -1152,36 +1152,51 @@ st.html("""
 </div>
 """)
 
+
 st.html("""
 <style>
 
 /* LIVE COUNT */
+
+/* Judul pemilihan */
 [data-testid="stVerticalBlock"] h3 {
     color: #173d2d !important;
 }
 
-[data-testid="stMetricLabel"] {
+/* Label metric */
+[data-testid="stMetricLabel"],
+[data-testid="stMetricLabel"] p {
     color: #64748b !important;
 }
 
-[data-testid="stMetricValue"] {
+/* Angka metric */
+[data-testid="stMetricValue"],
+[data-testid="stMetricValue"] div {
     color: #173d2d !important;
 }
 
-[data-testid="stMarkdownContainer"] p {
-    color: #334155;
+/* Alert: info, success, warning */
+div[data-testid="stAlert"] {
+    background-color: #d8e8f7 !important;
+    border: 1px solid #c5d9ed !important;
+    color: #334155 !important;
 }
 
-[data-testid="stAlert"] {
-    color: #173d2d !important;
+/* Paksa seluruh teks di dalam alert */
+div[data-testid="stAlert"] p,
+div[data-testid="stAlert"] span,
+div[data-testid="stAlert"] div {
+    color: #334155 !important;
 }
 
+/* Progress bar */
 [data-testid="stProgressBar"] {
-    background-color: #e5e7eb;
+    background-color: #e5e7eb !important;
 }
 
 </style>
 """)
+
 
 # =========================================================
 # LIVE COUNT PUBLICATION
@@ -1189,7 +1204,7 @@ st.html("""
 
 LIVE_COUNT_PUBLISHED = True # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
 
-@st.fragment(run_every="3s")
+@st.fragment(run_every="1s")
 def show_live_count():
 
     positions = db.get_elections()
