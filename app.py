@@ -12,6 +12,16 @@ import streamlit.components.v1 as components
 
 BASE_DIR = Path(__file__).resolve().parent
 
+from database import (
+    init_db,
+    get_elections,
+    get_candidates,
+    add_candidate,
+    add_vote,
+    correct_vote,
+    get_totals
+)
+
 db.init_db()
 
 LOGO_PATH = BASE_DIR / "logo_ppgt.png"
@@ -1177,7 +1187,7 @@ st.html("""
 # LIVE COUNT PUBLICATION
 # =========================================================
 
-LIVE_COUNT_PUBLISHED = False # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
+LIVE_COUNT_PUBLISHED = True # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
 
 @st.fragment(run_every="3s")
 def show_live_count():

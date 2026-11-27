@@ -1,3 +1,4 @@
 live_count.db
 __pycache__/
 .streamlit/secrets.toml
+*.py[cod]
