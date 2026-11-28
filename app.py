@@ -367,10 +367,10 @@ div[data-testid="stDownloadButton"] {
 
 /* HIJAU ORANGE */
 .current-card {
-    # background: #e5f5e9; /* kalau dimulai */
-    background: #FFEED9; /* kalau dipending */
-    # border: 1px solid #b7dfc2; /* kalau dimulai */
-    border: 1px solid #FF8C00; /* kalau dipending */
+    background: #e5f5e9; /* kalau dimulai */
+    # background: #FFEED9; /* kalau dipending */
+    border: 1px solid #b7dfc2; /* kalau dimulai */
+    # border: 1px solid #FF8C00; /* kalau dipending */
     padding: 25px;
     border-radius: 12px;
     min-height: 190px;
