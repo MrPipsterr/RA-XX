@@ -43,11 +43,11 @@ st.set_page_config(
 
 LIVE_STATUS = "SEDANG BERLANGSUNG"
 
-CURRENT_ACTIVITY = "SIDANG PLENO V"
-CURRENT_TOPIC = "Pembahasan Hasil Sidang Komisi"
+CURRENT_ACTIVITY = "SIDANG PLENO VI"
+CURRENT_TOPIC = "Pemilihan KSB PPGT Jemaat Labuang Baji Periode 2026-2028, Pembentukan Tim Formatur"
 
-NEXT_ACTIVITY = "SIDANG PLENO V"
-NEXT_TOPIC = "Lanjutan Pembahasan Komisi"
+NEXT_ACTIVITY = "Closing Ceremony & Doa Penutup"
+NEXT_TOPIC = "Penutupan Rapat Anggota XX PPGT JLB"
 
 # Contoh update:
 #
@@ -1212,7 +1212,7 @@ div[data-testid="stAlert"] {
 # LIVE COUNT PUBLICATION
 # =========================================================
 
-LIVE_COUNT_PUBLISHED = False # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
+LIVE_COUNT_PUBLISHED = True # KASIH KE TRUE KALAU SUDAH MULAI PEMILIHAN
 
 @st.fragment(run_every="4s")
 def show_live_count():
