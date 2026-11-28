@@ -43,11 +43,11 @@ st.set_page_config(
 
 LIVE_STATUS = "SEDANG BERLANGSUNG"
 
-CURRENT_ACTIVITY = "SIDANG PLENO IV"
-CURRENT_TOPIC = "Sidang Komisi"
+CURRENT_ACTIVITY = "SIDANG PLENO V"
+CURRENT_TOPIC = "Pembahasan Hasil Sidang Komisi"
 
 NEXT_ACTIVITY = "SIDANG PLENO V"
-NEXT_TOPIC = "Pembahasan Hasil Sidang Komisi"
+NEXT_TOPIC = "Lanjutan Pembahasan Komisi"
 
 # Contoh update:
 #
@@ -396,8 +396,8 @@ div[data-testid="stDownloadButton"] {
 
 /* HIJAU ORANGE */
 .current-card .card-label {
-    # color: #25834a;/* kalau dimulai */
-    color: #FF0D00; /* kalau dipending */
+    color: #25834a;/* kalau dimulai */
+    # color: #FF0D00; /* kalau dipending */
 }
 
 .next-card .card-label {
