@@ -41,13 +41,13 @@ st.set_page_config(
 # UPDATE BAGIAN INI SAAT KEGIATAN BERUBAH
 # =========================================================
 
-LIVE_STATUS = "SIDANG DIPENDING"
+LIVE_STATUS = "SEDANG BERLANGSUNG"
 
-CURRENT_ACTIVITY = "SIDANG DISKORS"
-CURRENT_TOPIC = "Seluruh Kegiatan sedang Diskors"
+CURRENT_ACTIVITY = "SIDANG PLENO IV"
+CURRENT_TOPIC = "Sidang Komisi"
 
-NEXT_ACTIVITY = "SIDANG PLENO IV"
-NEXT_TOPIC = "Pembahasan dan Pengesahan GBPP"
+NEXT_ACTIVITY = "SIDANG PLENO V"
+NEXT_TOPIC = "Pembahasan Hasil Sidang Komisi"
 
 # Contoh update:
 #
